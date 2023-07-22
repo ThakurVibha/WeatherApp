@@ -1,7 +1,5 @@
 # MVVM Clean Code Weather App
 
-![Weather App](weather_app_banner.jpg)
-
 This Weather App is an Android Kotlin demo application that showcases the implementation of MVVM architecture, Room database, Retrofit, Databinding, Kotlin Coroutines, and REST API to create a simple yet effective weather application. 
 
 ## Features

@@ -2,25 +2,17 @@
 
 ![Weather App](weather_app_banner.jpg)
 
-Weather App is an Android Kotlin demo application that showcases the implementation of MVVM architecture, Room database, Retrofit, Databinding, Kotlin Coroutines, and REST API to create a simple yet effective weather application. The project is designed to serve as a reference for developers who want to build clean and maintainable Android applications using modern architectural patterns and libraries.
+This Weather App is an Android Kotlin demo application that showcases the implementation of MVVM architecture, Room database, Retrofit, Databinding, Kotlin Coroutines, and REST API to create a simple yet effective weather application. 
 
 ## Features
 
 - Display current weather information for a given location.
 - Fetch weather data from a remote REST API using Retrofit.
-- Store and cache weather data locally using Room database for offline access.
+- Store and cache weather data locally using Room database.
 - Utilize Kotlin Coroutines for asynchronous operations.
 - Implement MVVM architecture for a separation of concerns and testability.
 - Utilize Data Binding for a seamless UI integration with data sources.
-- Display relevant weather icons based on the weather conditions.
-- Show a list of predefined cities and allow users to search for weather information.
-- Handle errors and provide appropriate feedback to the user.
-
-## Screenshots
-
-![Screenshot 1](screenshots/screenshot_1.png)
-![Screenshot 2](screenshots/screenshot_2.png)
-![Screenshot 3](screenshots/screenshot_3.png)
+- Allow users to search for weather information.
 
 ## Architecture
 

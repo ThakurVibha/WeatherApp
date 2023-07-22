@@ -1,0 +1,10 @@
+<resources>
+    <string name="app_name">AndroidAssignemnt2</string>
+    <string name="tempertaure">36\u00B0</string>
+    <string name="enter_your_city">Enter your city!</string>
+    <string name="newyork">NewYork</string>
+    <string name="rain">Rain</string>
+    <string name="wind">Wind</string>
+    <string name="_4km_h">4KM/h</string>
+    <string name="humidity">Humidity</string>
+</resources>

@@ -1,0 +1,323 @@
+<?xml version="1.0" encoding="utf-8"?>
+<layout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools">
+
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:background="@color/colorPrimary"
+        tools:context=".ui.WeatherReportActivity">
+
+
+        <androidx.core.widget.NestedScrollView
+            android:id="@+id/nested_scroll"
+            android:layout_width="0dp"
+            android:layout_height="0dp"
+            android:visibility="visible"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintHorizontal_bias="0.0"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent"
+            app:layout_constraintVertical_bias="0.0"
+            tools:visibility="visible">
+
+            <androidx.constraintlayout.widget.ConstraintLayout
+                android:id="@+id/clMain"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:visibility="visible">
+
+                <androidx.appcompat.widget.AppCompatImageView
+                    android:id="@+id/ivNoDataFoudn"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:visibility="gone"
+                    app:layout_constraintBottom_toBottomOf="parent"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toBottomOf="@+id/clSearch"
+                    app:srcCompat="@drawable/img_wait" />
+
+                <androidx.constraintlayout.widget.ConstraintLayout
+                    android:id="@+id/clSearch"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginStart="20dp"
+                    android:layout_marginTop="20dp"
+                    android:layout_marginEnd="20dp"
+                    android:background="@drawable/bg_round_corner_white"
+                    android:elevation="15dp"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toTopOf="parent">
+
+
+                    <androidx.appcompat.widget.AppCompatEditText
+                        android:id="@+id/etEnterCity"
+                        style="@style/styleTextRegular"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_marginStart="55dp"
+                        android:background="@null"
+                        android:drawablePadding="25dp"
+                        android:elevation="15dp"
+                        android:fontFamily="@font/merriweather_regular"
+                        android:gravity="start|center"
+                        android:hint="@string/enter_your_city"
+                        android:imeOptions="actionDone"
+                        android:inputType="text"
+                        android:maxLength="10"
+                        android:padding="15dp"
+                        android:paddingVertical="10dp"
+                        android:paddingStart="20dp"
+                        android:textAlignment="viewStart"
+                        android:textColor="@color/colorPrimary"
+                        android:textColorHint="@color/colorLightPrimary"
+                        android:textFontWeight="600"
+                        android:textSize="18dp"
+                        app:layout_constraintBottom_toBottomOf="parent"
+                        app:layout_constraintEnd_toEndOf="parent"
+                        app:layout_constraintStart_toEndOf="@+id/ivSearch"
+                        app:layout_constraintTop_toTopOf="parent" />
+
+                    <androidx.appcompat.widget.AppCompatImageView
+                        android:id="@+id/ivSearch"
+                        android:layout_width="35dp"
+                        android:layout_height="35dp"
+                        android:layout_marginStart="20dp"
+                        android:layout_marginEnd="20dp"
+                        app:layout_constraintBottom_toBottomOf="parent"
+                        app:layout_constraintStart_toStartOf="parent"
+                        app:layout_constraintTop_toTopOf="parent"
+                        app:srcCompat="@drawable/ic_search" />
+                </androidx.constraintlayout.widget.ConstraintLayout>
+
+                <androidx.appcompat.widget.AppCompatTextView
+                    android:id="@+id/tvCityName"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="20dp"
+                    android:fontFamily="@font/merriweather_bold"
+                    android:text="@string/newyork"
+                    android:textColor="@color/white"
+                    android:textFontWeight="600"
+                    android:textSize="40dp"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toBottomOf="@+id/clSearch" />
+
+                <androidx.appcompat.widget.AppCompatTextView
+                    android:id="@+id/tvMain"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="20dp"
+                    android:background="@drawable/bg_round"
+                    android:fontFamily="@font/merriweather_regular"
+                    android:text="@string/rain"
+                    android:textColor="@color/colorPrimary"
+                    android:textFontWeight="600"
+                    android:textSize="20dp"
+                    app:layout_constraintEnd_toEndOf="@+id/tvCityName"
+                    app:layout_constraintStart_toStartOf="@+id/tvCityName"
+                    app:layout_constraintTop_toBottomOf="@+id/tvCityName" />
+
+                <androidx.appcompat.widget.AppCompatTextView
+                    android:id="@+id/tvTemperature"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="15dp"
+                    android:fontFamily="@font/merriweather_bold"
+                    android:text="@string/tempertaure"
+                    android:textColor="@color/white"
+                    android:textSize="75dp"
+                    app:layout_constraintEnd_toEndOf="@+id/tvMain"
+                    app:layout_constraintStart_toStartOf="@+id/tvMain"
+                    app:layout_constraintTop_toBottomOf="@+id/tvMain" />
+
+                <androidx.appcompat.widget.LinearLayoutCompat
+                    android:id="@+id/linearLayoutCompat"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginStart="20dp"
+                    android:layout_marginTop="20dp"
+                    android:layout_marginEnd="20dp"
+                    android:layout_marginBottom="500dp"
+                    android:orientation="horizontal"
+                    android:weightSum="3"
+                    app:layout_constraintBottom_toBottomOf="parent"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toBottomOf="@+id/tvTemperature">
+
+                    <androidx.appcompat.widget.LinearLayoutCompat
+                        android:id="@+id/llWind"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_weight="1"
+                        android:gravity="center"
+                        android:orientation="vertical"
+                        app:layout_constraintBottom_toBottomOf="parent"
+                        app:layout_constraintStart_toStartOf="parent"
+                        app:layout_constraintTop_toTopOf="parent">
+
+                        <androidx.appcompat.widget.AppCompatImageView
+                            android:id="@+id/imageView"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:src="@drawable/ic_wind"
+                            tools:layout_editor_absoluteX="35dp"
+                            tools:layout_editor_absoluteY="416dp" />
+
+                        <androidx.appcompat.widget.AppCompatTextView
+                            android:id="@+id/tvWindValue"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_marginTop="25dp"
+                            android:fontFamily="@font/merriweather_regular"
+                            android:text="@string/_4km_h"
+                            android:textColor="@color/white"
+                            android:textFontWeight="600"
+                            android:textSize="20dp" />
+
+                        <androidx.appcompat.widget.AppCompatTextView
+                            android:id="@+id/tvWind"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_marginTop="15dp"
+                            android:fontFamily="@font/merriweather_regular"
+                            android:text="@string/wind"
+                            android:textColor="@color/white"
+                            android:textFontWeight="600"
+                            android:textSize="20dp" />
+
+                    </androidx.appcompat.widget.LinearLayoutCompat>
+
+                    <androidx.appcompat.widget.LinearLayoutCompat
+                        android:id="@+id/llHumidity"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_weight="1"
+                        android:gravity="center"
+                        android:orientation="vertical"
+                        app:layout_constraintBottom_toBottomOf="parent"
+                        app:layout_constraintStart_toEndOf="@+id/llWind"
+                        app:layout_constraintTop_toTopOf="parent">
+
+                        <androidx.appcompat.widget.AppCompatImageView
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:src="@drawable/ic_humidity"
+                            tools:layout_editor_absoluteX="35dp"
+                            tools:layout_editor_absoluteY="416dp" />
+
+                        <androidx.appcompat.widget.AppCompatTextView
+                            android:id="@+id/tvHumidity"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_marginTop="25dp"
+                            android:fontFamily="@font/merriweather_regular"
+                            android:text="48%"
+                            android:textColor="@color/white"
+                            android:textFontWeight="600"
+                            android:textSize="20dp" />
+
+                        <androidx.appcompat.widget.AppCompatTextView
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_marginTop="15dp"
+                            android:fontFamily="@font/merriweather_regular"
+                            android:text="@string/humidity"
+                            android:textColor="@color/white"
+                            android:textFontWeight="600"
+                            android:textSize="20dp" />
+
+                    </androidx.appcompat.widget.LinearLayoutCompat>
+
+                    <androidx.appcompat.widget.LinearLayoutCompat
+                        android:id="@+id/llVisibility"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_weight="1"
+                        android:gravity="center"
+                        android:orientation="vertical"
+                        app:layout_constraintBottom_toBottomOf="parent"
+                        app:layout_constraintStart_toEndOf="@+id/llWind"
+                        app:layout_constraintTop_toTopOf="parent">
+
+                        <androidx.appcompat.widget.AppCompatImageView
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:src="@drawable/ic_visibility"
+                            tools:layout_editor_absoluteX="35dp"
+                            tools:layout_editor_absoluteY="416dp" />
+
+                        <androidx.appcompat.widget.AppCompatTextView
+                            android:id="@+id/tvVisibility"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_marginTop="25dp"
+                            android:fontFamily="@font/merriweather_regular"
+                            android:text="3.4km"
+                            android:textColor="@color/white"
+                            android:textFontWeight="600"
+                            android:textSize="20dp" />
+
+                        <androidx.appcompat.widget.AppCompatTextView
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_marginTop="15dp"
+                            android:fontFamily="@font/merriweather_regular"
+                            android:text="Wind"
+                            android:textColor="@color/white"
+                            android:textFontWeight="600"
+                            android:textSize="20dp" />
+
+                    </androidx.appcompat.widget.LinearLayoutCompat>
+                </androidx.appcompat.widget.LinearLayoutCompat>
+
+                <View
+                    android:id="@+id/view"
+                    android:layout_width="match_parent"
+                    android:layout_height="2dp"
+                    android:layout_marginStart="15dp"
+                    android:layout_marginTop="15dp"
+                    android:layout_marginEnd="15dp"
+                    android:background="@color/white"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toBottomOf="@+id/linearLayoutCompat" />
+
+                <androidx.appcompat.widget.AppCompatTextView
+                    android:id="@+id/tvWeeklyForecast"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginStart="15dp"
+                    android:layout_marginTop="40dp"
+                    android:fontFamily="@font/merriweather_bold"
+                    android:text="Weekly Forecast"
+                    android:textColor="@color/white"
+                    android:textSize="25dp"
+                    app:layout_constraintStart_toStartOf="@+id/linearLayoutCompat"
+                    app:layout_constraintTop_toBottomOf="@+id/linearLayoutCompat" />
+
+                <androidx.recyclerview.widget.RecyclerView
+                    android:id="@+id/rvForecast"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginStart="15dp"
+                    android:layout_marginTop="15dp"
+                    android:layout_marginEnd="15dp"
+                    android:orientation="horizontal"
+                    app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toBottomOf="@+id/tvWeeklyForecast"
+                    tools:listitem="@layout/item_forecast" />
+
+
+            </androidx.constraintlayout.widget.ConstraintLayout>
+        </androidx.core.widget.NestedScrollView>
+    </androidx.constraintlayout.widget.ConstraintLayout>
+</layout>

@@ -28,7 +28,7 @@ data class WeatherReportEntity(
     val main: Main,
     val name: String? = "",
     @TypeConverters(DatabaseTypeConvertors::class)
-    val rain: Rain,
+    val rain: Rain?,
     @TypeConverters(DatabaseTypeConvertors::class)
     val sys: Sys,
     val timezone: Int? = 0,
@@ -36,6 +36,7 @@ data class WeatherReportEntity(
     @TypeConverters(DatabaseTypeConvertors::class)
     val weather: List<Weather>,
     @TypeConverters(DatabaseTypeConvertors::class)
-    val wind: Wind
+    val wind: Wind,
+    var timestamp: Long = 0
 
 )

@@ -7,70 +7,79 @@ import com.example.androidassignemnt2.api.WeatherReportService
 import com.example.androidassignemnt2.data.WeatherReport
 import com.example.androidassignemnt2.room.database.WeatherReportDatabase
 import com.example.androidassignemnt2.room.entity.WeatherReportEntity
+import com.example.androidassignemnt2.ui.WeatherReportActivity
+import com.example.androidassignemnt2.utils.Utils.isInternetAvailable
+import kotlinx.coroutines.CoroutineScope
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.launch
+
 
 class WeatherReportRepository(
     private var weatherReportService: WeatherReportService,
     private var weatherReportDatabase: WeatherReportDatabase
 ) {
+    private val weatherReportData = MutableLiveData<WeatherReportEntity>()
+    private val weatherReportError = MutableLiveData<String>()
+    private val weatherReportException = MutableLiveData<String>()
+    private val insertToLocalDB = MutableLiveData<WeatherReportEntity?>()
+    private val localWeatherReportData = MutableLiveData<WeatherReportEntity>()
 
-    private val weatherReportData = MutableLiveData<WeatherReport>()
-
-    val getWeatherReportData: LiveData<WeatherReport>
+    val getWeatherReportData: LiveData<WeatherReportEntity>
         get() = weatherReportData
+    val getWeatherReportError: LiveData<String>
+        get() = weatherReportError
+
+    val getWeatherReportException: LiveData<String>
+        get() = weatherReportException
+    val getInsertedData: MutableLiveData<WeatherReportEntity?>
+        get() = insertToLocalDB
+    val getLocalWeatherReport: LiveData<WeatherReportEntity>
+        get() = localWeatherReportData
 
 
-    suspend fun getWeatherReportResponse(toString: String, API_KEY: String?) {
+    suspend fun getWeatherReportResponse(
+        context: WeatherReportActivity,
+        cityName: String,
+        API_KEY: String?
+    ) {
         try {
-            val result = weatherReportService.getWeatherReport(toString, API_KEY.toString())
-
+            val result = weatherReportService.getWeatherReport(cityName, API_KEY.toString())
             Log.d("getResult", "$result")
             if (result.body() != null) {
-                //saving data to database
-                weatherReportData.let {
-                    val weatherData = result.body()
-                    weatherData?.clouds?.let { it1 ->
-                        weatherData?.main?.let { it2 ->
-                            weatherData?.coord?.let { it3 ->
-                                weatherData?.rain?.let { it4 ->
-                                    weatherData?.sys?.let { it5 ->
-                                        weatherData?.weather?.let { it6 ->
-                                            weatherData?.wind?.let { it7 ->
-                                                WeatherReportEntity(
-                                                    id = weatherData?.id ?: 0,
-                                                    base = weatherData?.base ?: "",
-                                                    clouds = it1,
-                                                    cod = weatherData?.cod ?: 0,
-                                                    coord = it3,
-                                                    dt = weatherData?.dt ?: 0,
-                                                    main = it2,
-                                                    name = weatherData?.name ?: "",
-                                                    rain = it4,
-                                                    sys = it5,
-                                                    timezone = weatherData?.timezone ?: 0,
-                                                    visibility = weatherData?.visibility ?: 0,
-                                                    weather = it6,
-                                                    wind = it7
-                                                )
-                                            }
-                                        }
-                                    }
-                                }
-                            }
-                        }
-                    }?.let { it2 ->
-                        weatherReportDatabase.weatherDao()
-                            .insertWeatherData(
-                                it2
-                            )
-                    }
+                if (result.isSuccessful) {
+                    weatherReportData.postValue(result.body())
+                } else {
+                    weatherReportError.postValue(result.body().toString())
                 }
-                weatherReportData.postValue(result.body())
+
+            } else {
+                weatherReportError.postValue(result.body().toString())
             }
         } catch (e: Exception) {
+            weatherReportException.postValue(e.message)
             Log.d("exception", "${e.printStackTrace()}")
-            Log.d("exception", "$e")
+        }
+    }
 
+    fun insertDataToDatabase(it: WeatherReportEntity?) {
+        CoroutineScope(Dispatchers.IO).launch {
+            if (it != null) {
+                it.timestamp = System.currentTimeMillis() // Setting the timestamp before insertion
+                weatherReportDatabase.weatherDao().insertWeatherData(it)
+                insertToLocalDB.postValue(it)
+                Log.e("insertWeatherDataToRoom", "$it")
+
+            }
+        }
+    }
+
+    suspend fun getDataFromLocalDatabase() {
+        CoroutineScope(Dispatchers.IO).launch {
+            val localWeatherReport = weatherReportDatabase.weatherDao().getWeatherDataFromDatabase()
+            localWeatherReportData.postValue(localWeatherReport)
         }
 
     }
+
 }
+

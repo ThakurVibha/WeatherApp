@@ -1,8 +1,10 @@
 package com.example.androidassignemnt2.ui
 
+import android.annotation.SuppressLint
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.util.Log
+import android.view.View
 import android.view.animation.Animation
 import android.view.animation.AnimationUtils
 import androidx.databinding.DataBindingUtil
@@ -10,13 +12,15 @@ import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProvider
 import com.example.androidassignemnt2.R
 import com.example.androidassignemnt2.api.WeatherReportClient.API_KEY
-import com.example.androidassignemnt2.data.WeatherReport
 import com.example.androidassignemnt2.databinding.ActivityWeatherReportBinding
 import com.example.androidassignemnt2.room.database.WeatherReportDatabase
 import com.example.androidassignemnt2.utils.Utils.shakeView
 import com.example.androidassignemnt2.viewmodel.WeatherReportViewModel
 import com.example.androidassignemnt2.viewmodel.WeatherReportViewModelFactory
 import com.example.androidassignemnt2.app.WeatherApp
+import com.example.androidassignemnt2.room.entity.WeatherReportEntity
+import com.example.androidassignemnt2.utils.Utils.isInternetAvailable
+import com.example.androidassignemnt2.utils.Utils.showToast
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
@@ -29,19 +33,20 @@ class WeatherReportActivity : AppCompatActivity() {
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
+        if (!isInternetAvailable()) {
+            showToast("Internet is not available")
+        }
         weatherReportBinding =
             DataBindingUtil.setContentView(this, R.layout.activity_weather_report)
         shake = AnimationUtils.loadAnimation(this, R.anim.shake)
         initialiseViewModel()
-        setObserver()
         makeApiCall()
-        getDataFromLocalDatabase()
+        setObserver()
     }
 
 
     private fun initialiseViewModel() {
         val weatherReportRepository = (application as WeatherApp).weatherReportRepository
-
         weatherReportViewModel =
             ViewModelProvider(this, WeatherReportViewModelFactory(weatherReportRepository)).get(
                 WeatherReportViewModel::class.java
@@ -66,51 +71,68 @@ class WeatherReportActivity : AppCompatActivity() {
 
     private fun makeApiCall() {
         weatherReportBinding.ivSearch.setOnClickListener {
-            if (validation()) {
-                weatherReportViewModel.sendCityName(
-                    weatherReportBinding.etEnterCity.text.toString(),
-                    API_KEY
-                )
+            if (!isInternetAvailable()) {
+                showToast("Internet is not available")
+            } else {
+                if (validation()) {
+                    weatherReportViewModel.sendCityName(
+                        this,
+                        weatherReportBinding.etEnterCity.text.toString(),
+                        API_KEY
+                    )
+                }
             }
         }
+        weatherReportViewModel.getLocalWeatherReport()
     }
 
     private fun setObserver() {
         weatherReportViewModel.weatherReport.observe(this, Observer {
-            Log.e("weatherData", "$it")
-//            CoroutineScope(Dispatchers.IO).launch {
-//                var weatherDataFromApi=it
-//
-//
-//            }
+            weatherReportViewModel.insertWeatherDataToDatabase(it)
+            weatherReportBinding.clMainWeatherLayout.visibility = View.VISIBLE
+            weatherReportBinding.ivNoDataFoudn.visibility = View.GONE
+            weatherReportBinding.tvEnterValidCityName.visibility = View.GONE
             setUpViews(it)
+
+        })
+        weatherReportViewModel.weatherErrorReport.observe(this, Observer {
+            weatherReportBinding.clMainWeatherLayout.visibility = View.GONE
+            weatherReportBinding.ivNoDataFoudn.visibility = View.VISIBLE
+            weatherReportBinding.tvEnterValidCityName.visibility = View.VISIBLE
+            showToast("Sorry, we do not found any information")
+        })
+        weatherReportViewModel.weatherReportException.observe(this, Observer {
+            showToast("Sorry, we do not found any information")
+        })
+        weatherReportViewModel.getInsertedData.observe(this, Observer {
+            if (it != null) {
+                Log.e("getInsertedData", "$it")
+            }
+        })
+
+        weatherReportViewModel.getWeatherReport.observe(this, Observer {
+            if (it != null) {
+                Log.e("getWeatherDataFromRoom", "$it")
+                setUpViews(it)
+            }
         })
     }
 
-    private fun getDataFromLocalDatabase() {
-        CoroutineScope(Dispatchers.IO).launch {
-            val weatherReportDatabase = WeatherReportDatabase.getDatabase(applicationContext)
-            val weatherDataFromLocalDatabase =
-                weatherReportDatabase.weatherDao().getWeatherDataFromDatabase()
-            Log.e(
-                "weatherReportDatabase", "$weatherDataFromLocalDatabase"
-            )
-        }
-    }
 
-    private fun setUpViews(it: WeatherReport?) {
-        weatherReportBinding.tvWindValue.text = "${it?.wind?.speed.toString()}/h"
-        weatherReportBinding.tvVisibility.text = "${it?.visibility.toString()}km"
-        it?.main.let {
-            weatherReportBinding.tvHumidity.text ="${it?.humidity.toString()}%"
-            val temperatureToCel = kelvinToCelsius(it?.temp!!.toDouble())
+    @SuppressLint("SetTextI18n")
+    private fun setUpViews(it: WeatherReportEntity) {
+        weatherReportBinding.tvWindValue.text = "${it.wind.speed.toString()}/h"
+        weatherReportBinding.tvVisibility.text = "${it.visibility.toString()}km"
+        it.main.let {
+            weatherReportBinding.tvHumidity.text = "${it.humidity.toString()}%"
+            val temperatureToCel = kelvinToCelsius(it.temp.toDouble())
             val formattedTemp = formatTemperature(temperatureToCel)
             weatherReportBinding.tvTemperature.text = "$formattedTemp\u00B0"
         }
-        it?.weather?.forEach {
+        it.weather.forEach {
             weatherReportBinding.tvMain.text = it.main
         }
-        weatherReportBinding.tvCityName.text = it?.name
+        weatherReportBinding.tvCityName.text = it.name
 
     }
 

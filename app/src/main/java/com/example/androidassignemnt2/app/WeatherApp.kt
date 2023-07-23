@@ -8,8 +8,6 @@ import com.example.androidassignemnt2.room.database.WeatherReportDatabase
 
 class WeatherApp : Application() {
 
-    //created repository reference as a singleton and it will be accessible everywhere
-    //This ensures that all ViewModel instances have access to the same repository
     lateinit var weatherReportRepository: WeatherReportRepository
 
     override fun onCreate() {

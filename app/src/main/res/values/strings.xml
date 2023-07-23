@@ -7,4 +7,8 @@
     <string name="wind">Wind</string>
     <string name="_4km_h">4KM/h</string>
     <string name="humidity">Humidity</string>
+    <string name="please_enter_another_valid_city_name">Please enter\nvalid city name (:</string>
+    <string name="_48">48%</string>
+    <string name="visibility">Visibility</string>
+    <string name="_3_4km">3.4km</string>
 </resources>

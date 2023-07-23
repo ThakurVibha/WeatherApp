@@ -8,7 +8,9 @@
 
 3. Build and run the app on an Android emulator or physical device.
    
-5. After filling city name click on search icon
+4. After filling city name click on search icon
+   
+5. In case api key reach max hit limits, consider to use another one.
    
 This Weather App is an Android Kotlin demo application that showcases the implementation of MVVM architecture, Room database, Retrofit, Databinding, Kotlin Coroutines, and REST API to create a simple yet effective weather application. 
 

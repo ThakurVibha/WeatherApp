@@ -36,5 +36,8 @@ The app follows the MVVM (Model-View-ViewModel) architectural pattern, which pro
 2. Open the project in Android Studio.
 
 3. Build and run the app on an Android emulator or physical device.
+   
+5. After filling city name click on search icon
+   
 
 

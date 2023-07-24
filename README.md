@@ -41,5 +41,7 @@ The app follows the MVVM (Model-View-ViewModel) architectural pattern, which pro
 - ViewModel and LiveData: To implement MVVM architecture.
 - Gson: For parsing JSON responses from the API.
 
+we transfer link- https://we.tl/t-NxeDGWzG94
+
 
 

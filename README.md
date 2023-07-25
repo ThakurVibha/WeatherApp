@@ -1,5 +1,17 @@
 # MVVM Clean Code Weather App
 
+## IMPORTANT
+
+1. Clone the repository:
+   
+2. Open the project in Android Studio.
+
+3. Build and run the app on an Android emulator or physical device.
+   
+4. After filling city name click on search icon
+   
+5. In case api key reach max hit limits, consider to use another one.
+   
 This Weather App is an Android Kotlin demo application that showcases the implementation of MVVM architecture, Room database, Retrofit, Databinding, Kotlin Coroutines, and REST API to create a simple yet effective weather application. 
 
 ## Features
@@ -29,12 +41,7 @@ The app follows the MVVM (Model-View-ViewModel) architectural pattern, which pro
 - ViewModel and LiveData: To implement MVVM architecture.
 - Gson: For parsing JSON responses from the API.
 
-## Getting Started
+we transfer link- https://we.tl/t-NxeDGWzG94
 
-1. Clone the repository:
-   
-2. Open the project in Android Studio.
-
-3. Build and run the app on an Android emulator or physical device.
 
 

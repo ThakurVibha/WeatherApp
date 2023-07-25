@@ -8,7 +8,7 @@
 
 3. Build and run the app on an Android emulator or physical device.
    
-4. After filling city name click on search icon
+4. Enter any valid city name 
    
 5. In case api key reach max hit limits, consider to use another one.
    
@@ -41,7 +41,7 @@ The app follows the MVVM (Model-View-ViewModel) architectural pattern, which pro
 - ViewModel and LiveData: To implement MVVM architecture.
 - Gson: For parsing JSON responses from the API.
 
-we transfer link- https://we.tl/t-NxeDGWzG94
+we transfer link- https://we.tl/t-avQLPfd3y7
 
 
 

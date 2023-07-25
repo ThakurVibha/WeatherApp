@@ -1,30 +1,32 @@
 package com.example.androidassignemnt2.ui
 
 import android.annotation.SuppressLint
-import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
+import android.text.Editable
+import android.text.TextWatcher
 import android.util.Log
+import android.view.KeyEvent
 import android.view.View
 import android.view.animation.Animation
 import android.view.animation.AnimationUtils
+import android.view.inputmethod.EditorInfo
+import androidx.appcompat.app.AppCompatActivity
 import androidx.databinding.DataBindingUtil
 import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProvider
 import com.example.androidassignemnt2.R
 import com.example.androidassignemnt2.api.WeatherReportClient.API_KEY
+import com.example.androidassignemnt2.app.WeatherApp
 import com.example.androidassignemnt2.databinding.ActivityWeatherReportBinding
-import com.example.androidassignemnt2.room.database.WeatherReportDatabase
+import com.example.androidassignemnt2.room.entity.WeatherReportEntity
+import com.example.androidassignemnt2.utils.Utils.hideKeyboard
+import com.example.androidassignemnt2.utils.Utils.isInternetAvailable
 import com.example.androidassignemnt2.utils.Utils.shakeView
+import com.example.androidassignemnt2.utils.Utils.showToast
 import com.example.androidassignemnt2.viewmodel.WeatherReportViewModel
 import com.example.androidassignemnt2.viewmodel.WeatherReportViewModelFactory
-import com.example.androidassignemnt2.app.WeatherApp
-import com.example.androidassignemnt2.room.entity.WeatherReportEntity
-import com.example.androidassignemnt2.utils.Utils.isInternetAvailable
-import com.example.androidassignemnt2.utils.Utils.showToast
-import kotlinx.coroutines.CoroutineScope
-import kotlinx.coroutines.Dispatchers
-import kotlinx.coroutines.launch
 import java.text.DecimalFormat
+
 
 class WeatherReportActivity : AppCompatActivity() {
     private lateinit var weatherReportBinding: ActivityWeatherReportBinding
@@ -70,6 +72,8 @@ class WeatherReportActivity : AppCompatActivity() {
     }
 
     private fun makeApiCall() {
+
+        initialiseTextWatcher()
         weatherReportBinding.ivSearch.setOnClickListener {
             if (!isInternetAvailable()) {
                 showToast("Internet is not available")
@@ -86,6 +90,33 @@ class WeatherReportActivity : AppCompatActivity() {
         weatherReportViewModel.getLocalWeatherReport()
     }
 
+    private fun initialiseTextWatcher() {
+
+        weatherReportBinding.etEnterCity.addTextChangedListener(object : TextWatcher {
+            override fun beforeTextChanged(s: CharSequence?, start: Int, count: Int, after: Int) {
+            }
+
+            override fun onTextChanged(s: CharSequence?, start: Int, before: Int, count: Int) {
+
+            }
+
+            override fun afterTextChanged(s: Editable?) {
+                if (s != null) {
+                    if (s.isNotEmpty()) {
+                        if (validation()) {
+                            weatherReportViewModel.sendCityName(
+                                this@WeatherReportActivity,
+                                s.toString(),
+                                API_KEY
+                            )
+                        }
+                    }
+                }
+            }
+
+        })
+    }
+
     private fun setObserver() {
         weatherReportViewModel.weatherReport.observe(this, Observer {
             weatherReportViewModel.insertWeatherDataToDatabase(it)
@@ -99,10 +130,8 @@ class WeatherReportActivity : AppCompatActivity() {
             weatherReportBinding.clMainWeatherLayout.visibility = View.GONE
             weatherReportBinding.ivNoDataFoudn.visibility = View.VISIBLE
             weatherReportBinding.tvEnterValidCityName.visibility = View.VISIBLE
-            showToast("Sorry, we do not found any information")
         })
         weatherReportViewModel.weatherReportException.observe(this, Observer {
-            showToast("Sorry, we do not found any information")
         })
         weatherReportViewModel.getInsertedData.observe(this, Observer {
             if (it != null) {
